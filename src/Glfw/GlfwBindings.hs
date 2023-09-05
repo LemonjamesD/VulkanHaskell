@@ -22,6 +22,7 @@ foreign import capi "GLFW/glfw3.h value GLFW_FALSE" raw_glfwFalse :: GlfwBool
 
 foreign import capi "GLFW/glfw3.h value GLFW_CLIENT_API" raw_glfwClientApi :: CInt
 foreign import capi "GLFW/glfw3.h value GLFW_NO_API" raw_glfwNoApi :: CInt
+foreign import capi "GLFW/glfw3.h value GLFW_RESIZABLE" raw_glfwResizable :: CInt
 
 -- GLFW Functions
 

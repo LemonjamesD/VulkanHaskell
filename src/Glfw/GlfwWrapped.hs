@@ -14,10 +14,18 @@ import Foreign.C.ConstPtr
 import Foreign.Marshal.Alloc
 import Foreign.Storable
 
+glfwTrue :: Int
+glfwTrue = 1
+glfwFalse :: Int
+glfwFalse = 0
+
 glfwClientApi :: Int
 glfwClientApi = fromCInt raw_glfwClientApi
 glfwNoApi :: Int
 glfwNoApi = fromCInt raw_glfwNoApi
+
+glfwResizable :: Int
+glfwResizable = fromCInt raw_glfwResizable
 
 glfwInit :: Window ()
 glfwInit = do

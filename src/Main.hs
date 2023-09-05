@@ -15,7 +15,8 @@ main = do
 doWindowActions :: Window ()
 doWindowActions = do
   glfwInit
-  -- glfwWindowHint glfwClientApi glfwNoApi
+  glfwWindowHint glfwClientApi glfwNoApi
+  glfwWindowHint glfwResizable glfwFalse
   glfwCreateWindow 100 100 "Hello, World"
   
   _ <- withVulkan
