@@ -16,6 +16,7 @@ import Foreign.Ptr
 import Foreign.C.String
 import Foreign.C.ConstPtr
 import Foreign.CStorable
+import Foreign.Storable
 import Foreign.Marshal.Utils
 import Control.Monad.IO.Unlift
 
@@ -42,6 +43,11 @@ data RawVkExtensionProperties = RawVkExtensionProperties {
   c_specVersion :: CUInt
 } deriving (Generic)
 instance CStorable RawVkExtensionProperties
+instance Storable RawVkExtensionProperties where
+  sizeOf = cSizeOf
+  alignment = cAlignment
+  poke = cPoke
+  peek = cPeek
 
 data VulkanExtensionProperties = VulkanExtensionProperties {
   extensionName :: String,
