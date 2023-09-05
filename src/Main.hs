@@ -16,11 +16,11 @@ main = do
 doWindowActions :: Window ()
 doWindowActions = do
   glfwInit
-  glfwWindowHint glfwClientApi glfwNoApi
+  -- glfwWindowHint glfwClientApi glfwNoApi
   glfwCreateWindow 100 100 "Hello, World"
   
-  result <- liftIO $ vulkanToIO $ vulkanEnumerateInstanceExtensionProperties Nothing 0 Nothing
-  liftIO $ putStrLn $ "Extensions: " ++ show result
+  -- result <- liftIO $ vulkanToIO $ vulkanEnumerateInstanceExtensionProperties Nothing 0 Nothing
+  -- liftIO $ putStrLn $ "Extensions: " ++ show result
   
   eventLoop
 
@@ -31,6 +31,7 @@ eventLoop = do
     glfwDestroyWindow
   else do
     glfwPollEvents
+    glfwSwapBuffers
   
     -- Read error codes
     (resultCode, description) <- glfwGetError

@@ -173,6 +173,16 @@ glfwDestroyWindow = do
   unwrapped <- liftIO $ maybe (throw WindowNotInitialized) pure windowValue
   liftIO $ raw_glfwDestroyWindow unwrapped
 
+foreign import capi "GLFW/glfw3.h glfwSwapBuffers" raw_glfwSwapBuffers :: Ptr RawGlfwWindow -> IO ()
+
+glfwSwapBuffers :: Window ()
+glfwSwapBuffers = do
+  ctx <- getWindowCtx
+  windowValue <- liftIO $ readIORef $ realWindow ctx
+  unwrapped <- liftIO $ maybe (throw WindowNotInitialized) pure windowValue
+  result <- liftIO $ raw_glfwSwapBuffers unwrapped
+  return ()
+
 -- foreign import capi safe "GLFW/glfw3.h glfwSetErrorCallback" raw_glfwSetErrorCallback :: FunPtr (CInt -> ConstPtr CChar -> IO ()) -> IO (FunPtr (CInt -> ConstPtr CChar -> ()))
 
 -- glfwSetErrorCallback :: (Int -> String -> ()) -> Window ()
