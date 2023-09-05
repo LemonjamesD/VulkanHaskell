@@ -61,12 +61,15 @@ executable cinderblock
     -- .hs or .lhs file containing the Main module.
     main-is:          Main.hs
 
-    pkgconfig-depends: glfw3
+    pkgconfig-depends:
+        glfw3,
+        vulkan
 
     -- Modules included in this executable, other than Main.
     other-modules:
         GlfwBindings
         VulkanBindings
+        Helpers
 
     -- LANGUAGE extensions used by modules in this package.
     -- other-extensions:

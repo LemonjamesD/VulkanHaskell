@@ -1,3 +1,4 @@
 #pragma once
 
-int wrappedGlfwGetError(char* description);
+const char* nullConstStr();
+const char* allocConstStr(char* str);

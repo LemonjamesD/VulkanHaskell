@@ -21,8 +21,8 @@
                 # `cabal`, `hlint` and `haskell-language-server`
                 shell.tools = {
                   cabal = {};
-                  hlint = {};
-                  haskell-language-server = {};
+                  # hlint = {};
+                  # haskell-language-server = {};
                 };
                 # Non-Haskell shell tools go here
                 shell.buildInputs = with pkgs; [
@@ -43,4 +43,10 @@
         # Built by `nix build .`
         packages.default = flake.packages."cinderblock:exe:cinderblock";
       });
+
+  nixConfig = {
+    extra-substituters = ["https://cache.iog.io"];
+    extra-trusted-public-keys = ["hydra.iohk.io:f/Ea+s+dFdN+3Y/G+FDgSq+a5NEWhJGzdjvKNGv0/EQ="];
+    allow-import-from-derivation = "true";
+  };
 }

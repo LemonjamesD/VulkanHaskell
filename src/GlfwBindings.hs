@@ -5,6 +5,7 @@
 module GlfwBindings where
 
 import VulkanBindings
+import Helpers
 
 import Control.Exception
 import Data.Typeable
@@ -17,6 +18,7 @@ import Foreign.C.String
 import Data.Int
 import Foreign.C.ConstPtr
 import Foreign.Marshal.Alloc
+import Foreign.Marshal.Utils
 import Foreign.Storable
 
 data WindowCtx = WindowCtx {
@@ -28,6 +30,7 @@ data WindowActions = InitWindow | SetWindowHint Int Int | CreateWindow Int Int S
 data WindowErrors =
   FailedToGLFWInit Int
   | CreateWindowIsNullPtr
+  | WindowNotInitialized
   deriving (Show, Typeable)
 
 instance Exception WindowErrors
@@ -73,9 +76,6 @@ glfwClientApi :: Int
 glfwClientApi = fromCInt raw_glfwClientApi
 glfwNoApi :: Int
 glfwNoApi = fromCInt raw_glfwNoApi
-
--- GLFW Data
--- TODO: Implement platform-specific behavior
 
 -- It's an alias of Int
 type GlfwBool = CInt
@@ -151,3 +151,38 @@ glfwGetError = do
       let inted = fromCInt errorCode
       return (inted, stringed)
   return (errorCode, errorString)
+  
+foreign import capi "GLFW/glfw3.h glfwWindowShouldClose" raw_glfwWindowShouldClose :: Ptr RawGlfwWindow -> IO CInt
+
+glfwWindowShouldClose :: Window Bool
+glfwWindowShouldClose = do
+  ctx <- getWindowCtx
+  windowValue <- liftIO $ readIORef $ realWindow ctx
+  unwrapped <- liftIO $ maybe (throw WindowNotInitialized) pure windowValue
+  result <- liftIO $ raw_glfwWindowShouldClose unwrapped
+  return (case result of
+    1 -> True
+    _ -> False)
+  
+foreign import capi "GLFW/glfw3.h glfwDestroyWindow" raw_glfwDestroyWindow :: Ptr RawGlfwWindow -> IO ()
+
+glfwDestroyWindow :: Window ()
+glfwDestroyWindow = do
+  ctx <- getWindowCtx
+  windowValue <- liftIO $ readIORef $ realWindow ctx
+  unwrapped <- liftIO $ maybe (throw WindowNotInitialized) pure windowValue
+  liftIO $ raw_glfwDestroyWindow unwrapped
+
+-- foreign import capi safe "GLFW/glfw3.h glfwSetErrorCallback" raw_glfwSetErrorCallback :: FunPtr (CInt -> ConstPtr CChar -> IO ()) -> IO (FunPtr (CInt -> ConstPtr CChar -> ()))
+
+-- glfwSetErrorCallback :: (Int -> String -> ()) -> Window ()
+-- glfwSetErrorCallback f = do
+--   func <- pure $ castPtrToFunPtr $ liftIO $ new
+--     (\error description 
+--       -> do
+--             unConsted <- unConstPtr description
+--             stringed <- peekCString unConsted
+--             inted <- fromCInt error
+--             f inted stringed)
+--   _ <- liftIO $ raw_glfwSetErrorCallback func
+--   pure ()
