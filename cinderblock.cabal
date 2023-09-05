@@ -63,7 +63,11 @@ executable cinderblock
 
     pkgconfig-depends:
         glfw3,
-        vulkan
+        vulkan,
+        x11,
+        wayland-client,
+        wayland-server,
+        wayland-egl
 
     -- Modules included in this executable, other than Main.
     other-modules:

@@ -26,8 +26,10 @@
                 };
                 # Non-Haskell shell tools go here
                 shell.buildInputs = with pkgs; [
-                  glfw
+                  glfw-wayland
                   vulkan-headers
+                  xorg.libX11 xorg.libXcursor xorg.libXi xorg.libXrandr
+                  libxkbcommon wayland
                 ];
                 # This adds `js-unknown-ghcjs-cabal` to the shell.
                 # shell.crossPlatforms = p: [p.ghcjs];
