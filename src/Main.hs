@@ -1,12 +1,11 @@
 module Main where
 
-import GlfwBindings
+import Glfw.GlfwWrapped
+import WindowMonad
 import VulkanBindings
 
 import Control.Monad.IO.Class
 import Control.Concurrent
-import Data.IORef
-import Control.Monad.IO.Unlift
 
 main :: IO ()
 main = do
@@ -19,16 +18,19 @@ doWindowActions = do
   -- glfwWindowHint glfwClientApi glfwNoApi
   glfwCreateWindow 100 100 "Hello, World"
   
-  -- result <- liftIO $ vulkanToIO $ vulkanEnumerateInstanceExtensionProperties Nothing 0 Nothing
-  -- liftIO $ putStrLn $ "Extensions: " ++ show result
+  _ <- withVulkan
+    (\_ -> do
+            result <- vulkanEnumerateInstanceExtensionProperties Nothing 0 Nothing
+            liftIO $ putStrLn $ "Extensions: " ++ show result)
   
   eventLoop
 
 eventLoop :: Window ()
 eventLoop = do
   shouldClose <- glfwWindowShouldClose
-  if shouldClose then
+  if shouldClose then do
     glfwDestroyWindow
+    glfwTerminate
   else do
     glfwPollEvents
     glfwSwapBuffers

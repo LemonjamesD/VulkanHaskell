@@ -5,8 +5,9 @@
 module VulkanBindings where
 
 import Helpers
+import WindowMonad
 
-import Data.Typeable
+import GHC.Generics
 import Control.Monad.IO.Class
 import Control.Monad.Trans.Reader
 import Data.IORef
@@ -14,8 +15,7 @@ import Foreign.C.Types
 import Foreign.Ptr
 import Foreign.C.String
 import Foreign.C.ConstPtr
-import Foreign.Marshal.Alloc
-import Foreign.Storable
+import Foreign.CStorable
 import Foreign.Marshal.Utils
 import Control.Monad.IO.Unlift
 
@@ -40,8 +40,8 @@ type RawVkResult = CInt
 data RawVkExtensionProperties = RawVkExtensionProperties {
   c_extensionName :: CString,
   c_specVersion :: CUInt
-}
-instance Storable RawVkExtensionProperties
+} deriving (Generic)
+instance CStorable RawVkExtensionProperties
 
 data VulkanExtensionProperties = VulkanExtensionProperties {
   extensionName :: String,
@@ -62,6 +62,9 @@ vulkanToIO :: Vulkan a -> IO a
 vulkanToIO vulkan = do
   ctx <- initVulkanCtx
   runVulkan vulkan ctx
+
+withVulkan :: (() -> Vulkan a) -> Window a
+withVulkan f = liftIO $ vulkanToIO $ f ()
 
 -- Vulkan Functions
 

@@ -71,8 +71,11 @@ executable cinderblock
 
     -- Modules included in this executable, other than Main.
     other-modules:
-        GlfwBindings
+        Glfw.GlfwBindings
+        Glfw.GlfwTypes
+        Glfw.GlfwWrapped
         VulkanBindings
+        WindowMonad
         Helpers
 
     -- LANGUAGE extensions used by modules in this package.
