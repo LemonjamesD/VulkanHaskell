@@ -1,8 +1,9 @@
 module Main where
 
 import Glfw.GlfwWrapped
+import Vulkan.VulkanWrapped
 import WindowMonad
-import VulkanBindings
+import VulkanMonad
 
 import Control.Monad.IO.Class
 import Control.Concurrent

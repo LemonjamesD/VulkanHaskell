@@ -74,8 +74,11 @@ executable cinderblock
         Glfw.GlfwBindings
         Glfw.GlfwTypes
         Glfw.GlfwWrapped
-        VulkanBindings
+        Vulkan.VulkanBindings
+        Vulkan.VulkanTypes
+        Vulkan.VulkanWrapped
         WindowMonad
+        VulkanMonad
         Helpers
 
     -- LANGUAGE extensions used by modules in this package.
